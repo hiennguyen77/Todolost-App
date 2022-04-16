@@ -5,10 +5,7 @@ function Todo() {
     
     
     const [job, setJob] = useState('');
-    const [jobs, setJobs] = useState(() => {
-        const localStorageJson = JSON.parse(localStorage.getItem('job'));
-        return localStorageJson;
-    });
+    const [jobs, setJobs] = useState([]);
     
     const ref = useRef();
     
@@ -20,9 +17,6 @@ function Todo() {
         if(job) {
             setJobs((prev => {
                 const newJob = [...prev, job];
-                //save localStorage
-                const jsonJob = JSON.stringify(newJob);
-                localStorage.setItem('job', jsonJob);
                
                 return newJob;
             }))   
@@ -35,29 +29,9 @@ function Todo() {
        const newJobs = [...jobs]
        newJobs.splice(index, 1);
        setJobs(newJobs);
-
-       //update localstorage
-       const jsonJob = JSON.stringify(newJobs);
-       localStorage.setItem('job', jsonJob);
-  
     }
 
-    const handleClearAll= ()=> {
-        const newJobs = setJobs([]);
-        //update localStorage
-        const jsonJob = JSON.stringify(newJobs);
-        localStorage.setItem('job', jsonJob);
-  
-    }
-
-
-    // update
-    const handleEdit =()=> {
-        
-      alert('chưa cập nhật');
-          
-    }
- 
+   
     return (
       <div className="App-todo">
           <h1 className='heading'>What's your plans for Today ?</h1>
@@ -80,9 +54,7 @@ function Todo() {
                       {jobs.map((job, index) => (
                       <div
                         key={index}
-                        className='todo-item-container '
-                        onClick={handleEdit}
-                      >
+                        className='todo-item-container'>
                         <li className='todo-item'>{job}</li>
                         <button 
                             onClick={()=>handleDelete(index)} 
@@ -91,14 +63,12 @@ function Todo() {
                         </button>
                       </div>)
                       )}
-                      
                   </ul>
                   <h1 className='title-app'>To Do List</h1>
                   <div className='line'></div>
                   <div className='footer'>
                       <h5 className='footer-item'>item: {jobs.length}</h5>
                       <button className='clear-btn' 
-                      onClick={handleClearAll}
                       >Clear All</button>
                   </div>
               </div>
